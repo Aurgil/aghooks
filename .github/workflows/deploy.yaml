@@ -1,0 +1,44 @@
+name: Deploiement d'une nouvelle version de production
+run-name: ${{ github.actor }} déploie une nouvelle version de production
+on:
+    pull_request:
+        branches:
+            - master
+        types:
+            - closed
+jobs:
+    Deploying:
+        runs-on: ubuntu-latest
+        if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'master' && github.event.pull_request.head.ref == 'dev'
+        steps:
+            - id: ssh
+              name: Configuration de l'accés SSH
+              env:
+                  deploy_key: ${{ secrets.DEPLOY_KEY }}
+              run: |
+                  mkdir -p ~/.ssh
+                  echo "$deploy_key" > /tmp/id_github
+                  tr -d '\015' < /tmp/id_ed25519 > ~/.ssh/id_ed25519
+                  chmod 600 ~/.ssh/id_ed25519
+
+                  deploy_key="$(cat ~/.ssh/id_ed25519)"
+                  EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+                  echo "deploy_key<<$EOF" >> $GITHUB_OUTPUT
+                  cat ~/.ssh/id_ed25519 >> $GITHUB_OUTPUT
+                  echo "$EOF" >> $GITHUB_OUTPUT
+            - name: Récupération du dépôt
+              uses: actions/checkout@v3
+              with:
+                  ref: dev
+                  ssh-key: ${{steps.ssh.outputs.deploy_key}}
+            - name: Build de la version du package
+              run: |
+                  npm i
+                  npm run build
+            - name: Déploiement de la version du package
+              uses: s0/git-publish-subdir-action@develop
+              env:
+                  REPO: git@github.com:Aurgil/aghooks.git
+                  FOLDER: dist
+                  BRANCH: deploy
+                  SSH_PRIVATE_KEY: ${{ steps.conf_ssh.outputs.deploy_key }}
