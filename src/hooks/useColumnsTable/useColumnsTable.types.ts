@@ -1,32 +1,32 @@
 /** Identifiant unique d'une colonne. Est composé selon l'index de la colonne */
-export type TUTCId = string;
+export type TUCTId = string;
 
 /** Definition of a column */
-export type TUTCDef = {
+export type TUCTDef = {
     titre?: string;
     field?: string;
-    children?: TUTCDefs;
+    children?: TUCTDefs;
 };
 /** List of definitions */
-export type TUTCDefs = TUTCDef[];
+export type TUCTDefs = TUCTDef[];
 
 /** A column */
-export type TUTCColumn = TUTCDef & {
-    parent?: TUTCId;
+export type TUCTColumn = TUCTDef & {
+    parent?: TUCTId;
 };
 /** Liste of columns */
-export type TUTCColumns = TUTCColumn[];
+export type TUCTColumns = TUCTColumn[];
 
 /** Columns extracted from column definitions */
-export type TUTCFlatten = Record<TUTCId, TUTCColumn>;
+export type TUCTFlatten = Record<TUCTId, TUCTColumn>;
 
 /** Result of columns hook */
-export type TUTCState = {
-    flatten: TUTCFlatten;
-    contents: TUTCColumns;
+export type TUCTState = {
+    flatten: TUCTFlatten;
+    contents: TUCTColumns;
 };
 
 /** Function to make a column from a column definition */
-export type TUTCMake = (def: TUTCDef, opts?: { parent?: TUTCId }) => TUTCColumn;
+export type TUCTMake = (def: TUCTDef, opts?: { parent?: TUCTId }) => TUCTColumn;
 /** Function to extract and flat columns from defs */
-export type TUTCFlat = (defs: TUTCDefs, parent?: TUTCId) => TUTCFlatten;
+export type TUCTFlat = (defs: TUCTDefs, parent?: TUCTId) => TUCTFlatten;

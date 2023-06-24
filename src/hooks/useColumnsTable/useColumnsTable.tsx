@@ -1,13 +1,13 @@
 import { useCallback, useMemo } from "react";
 import {
-    TUTCDefs,
-    TUTCState,
-    TUTCDef,
-    TUTCFlatten,
-    TUTCId,
-    TUTCColumn,
-    TUTCMake,
-    TUTCFlat,
+    TUCTDefs,
+    TUCTState,
+    TUCTDef,
+    TUCTFlatten,
+    TUCTId,
+    TUCTColumn,
+    TUCTMake,
+    TUCTFlat,
 } from "./useColumnsTable.types";
 
 /**
@@ -15,25 +15,25 @@ import {
  * @param defs Definitions to make columns
  * @returns Differents states make from definitions given
  */
-export default function useColumnsTable(defs: TUTCDefs): TUTCState {
+export default function useColumnsTable(defs: TUCTDefs): TUCTState {
     /** To make a column from a definition */
-    const makeColumn = useCallback<TUTCMake>((def: TUTCDef, opts) => {
-        const colonne: TUTCColumn = { ...def, parent: opts?.parent };
+    const makeColumn = useCallback<TUCTMake>((def: TUCTDef, opts) => {
+        const colonne: TUCTColumn = { ...def, parent: opts?.parent };
         return colonne;
     }, []);
 
     /**
      * To make columns from definitions and extract them
      */
-    const flatDefs = useCallback<TUTCFlat>(
-        (defs, parent): TUTCFlatten => {
-            const flatten: TUTCFlatten = {};
+    const flatDefs = useCallback<TUCTFlat>(
+        (defs, parent): TUCTFlatten => {
+            const flatten: TUCTFlatten = {};
 
             for (let i = 0; i < defs.length; i++) {
                 const def = defs[i];
 
                 // Calculation of the key identifying the column
-                const key: TUTCId = `${parent ? `${parent}-` : ""}${i}`;
+                const key: TUCTId = `${parent ? `${parent}-` : ""}${i}`;
 
                 // Make column from def
                 const column = makeColumn(def, { parent });
@@ -54,8 +54,8 @@ export default function useColumnsTable(defs: TUTCDefs): TUTCState {
 
     // Analysis of column definitions
     const { contents, flatten } = useMemo(() => {
-        const contents: TUTCDefs = [];
-        const flatten: TUTCFlatten = flatDefs(defs);
+        const contents: TUCTDefs = [];
+        const flatten: TUCTFlatten = flatDefs(defs);
         return { contents, flatten };
     }, [defs, flatDefs]);
 
