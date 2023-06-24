@@ -8,8 +8,7 @@
     "build:webpack": "npx tsc --project configs/typescript/webpack.tsconfig.json",
     "build:package": "npx webpack build --config configs/webpack/build/package.webpack.js",
     "build": "npm run build:package",
-    "test": "jest",
-    "coverage": "jest --coverage"
+    "test": "jest -c configs/jest.config.js"
   },
   "keywords": [],
   "author": "",

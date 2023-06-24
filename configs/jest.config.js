@@ -1,4 +1,5 @@
 module.exports = {
+    rootDir: "..",
     collectCoverage: true,
     collectCoverageFrom: ["src/**/*.{js,jsx,ts,tsx}"],
     coverageDirectory: "<rootDir>/coverage",
@@ -10,10 +11,7 @@ module.exports = {
             "ts-jest",
             { tsconfig: "./configs/typescript/package.tsconfig.json" },
         ],
-        "^.+\\.(js|jsx)$": [
-            "babel-jest",
-            { configFile: "./configs/.babelrc" },
-        ],
+        "^.+\\.(js|jsx)$": ["babel-jest", { configFile: "./configs/.babelrc" }],
     },
     testMatch: ["**/*.test.(ts|tsx)"],
 };
